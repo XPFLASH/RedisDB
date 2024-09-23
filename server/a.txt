@@ -1,0 +1,135 @@
+import express, { json } from 'express';
+import { Client, fql } from 'fauna';  // Importamos FaunaClient y FQL de fauna
+import cors from 'cors';
+import dotenv from 'dotenv';
+import jwt from 'jsonwebtoken'; // Agregamos jsonwebtoken para generar JWT
+
+dotenv.config();
+
+const app = express();
+app.use(cors());
+app.use(json());
+
+// Configuramos el cliente de FaunaDB usando FQL v10
+const client = new Client({
+  secret: process.env.FAUNA_SECRET_KEY,
+  domain: 'db.fauna.com',
+  scheme: 'https',
+});
+
+// Función para agregar un usuario en FaunaDB usando FQL v10 con `fql`
+const addUser = async (userData) => {
+  const query = fql`
+    users.create({
+      name: ${userData.name},
+      age: ${userData.age},
+      email: ${userData.email},
+      password: ${userData.password},
+      phone: ${userData.phone},
+      country: ${userData.country}
+    })
+  `;
+
+  const result = await client.query(query);
+  return result;
+};
+
+// Función para obtener todos los usuarios de FaunaDB
+const getUsers = async () => {
+  const query = fql`
+    users.all() {
+      name,
+      age,
+      email,
+      password,
+      phone,
+      country
+    }
+  `;
+
+  const result = await client.query(query);
+  return result;
+};
+
+// Ruta para registrar datos (POST)
+app.post('/register', async (req, res) => {
+  try {
+    const result = await addUser(req.body);
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Ruta para obtener todos los usuarios (GET)
+app.get('/users', async (req, res) => {
+  try {
+    const result = await getUsers();
+    res.status(200).json(result);  // Retorna todos los usuarios
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+const loginUser = async (email, password) => {
+  try {
+    console.log(`Buscando el usuario con email: ${email}`);
+
+    // Usar FQL v10 para buscar todos los usuarios
+    const query = fql`
+      users.all() {
+        name,
+        email,
+        password
+      }
+    `;
+
+    // Ejecutar la consulta
+    const result = await client.query(query);
+
+    // Acceder a la propiedad 'data' que contiene los usuarios
+    const users = result.data.data;
+
+    // Filtrar el usuario que coincide con el email
+    const user = users.find(u => u.email === email);
+
+    if (!user) {
+      throw new Error('Usuario no encontrado');
+    }
+
+    console.log(`Resultado de la búsqueda del usuario:`, user);
+
+    // Comparar la contraseña ingresada con la almacenada
+    console.log(`Comparando contraseñas: ${password} === ${user.password}`);
+
+    if (password !== user.password) {
+      throw new Error('Contraseña incorrecta');
+    }
+
+    // Generar el token JWT
+    const token = jwt.sign({ email: user.email, name: user.name }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+    return { token, user };  // Retorna el token JWT y los datos del usuario
+  } catch (error) {
+    console.error('Error en loginUser:', error.message);
+    throw new Error('Error al iniciar sesión: ' + error.message);
+  }
+};
+
+// Ruta para iniciar sesión (POST)
+app.post('/login', async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const { token, user } = await loginUser(email, password);
+    res.status(200).json({ token, user });
+  } catch (error) {
+    console.error('Error en la ruta /login:', error.message);  // Log de error
+    res.status(401).json({ error: error.message });
+  }
+});
+
+// Iniciar el servidor en el puerto 5000
+app.listen(5000, () => {
+  console.log('Servidor ejecutándose en el puerto 5000');
+});

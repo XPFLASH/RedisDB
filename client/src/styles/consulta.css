@@ -1,0 +1,14 @@
+#consulta {
+    background-color: aqua;
+    height: 103vh;
+    width: 74vw;
+    border: 4px solid #29D3F2;
+    background-color: #3C4267;
+    border-radius: 15px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+  }
+
+#h1Consulta{
+    text-align: center;
+    font-size: 25px; 
+}

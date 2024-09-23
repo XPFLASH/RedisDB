@@ -1,0 +1,74 @@
+#registro {
+    background-color: #3C4267;
+    width: 71vw;
+    height: 97vh;
+    border: 4px solid #29D3F2;
+    border-radius: 15px;
+    padding: 20px;
+    font-family: 'Verdana', Geneva, Tahoma, sans-serif;
+    color: #fff;
+  }
+  
+  #h1Registro {
+    text-align: center;
+    font-size: 28px;
+    margin-bottom: 20px;
+  }
+  
+  #sectionForm {
+    margin-bottom: 30px;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  label {
+    font-size: 12.5px;
+    margin-bottom: 8px;
+    color: #F5F5F5;
+    
+  }
+  
+  input {
+    padding: 12px;
+    font-size: 12.5px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #fff;
+    width: 100%;
+    box-sizing: border-box; 
+  }
+  
+  button {
+    background-color: #2F81A1;
+    color: white;
+    padding: 12px 0;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    cursor: pointer;
+    width: 14%;
+  }
+  
+  button:hover {
+    background-color: #11131E;
+  }
+  
+  form div {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  #divBoton{
+    align-items: end;
+  }
+  
+  @media (max-width: 768px) {
+    #registro {
+      width: 90vw;
+    }
+  }
+  

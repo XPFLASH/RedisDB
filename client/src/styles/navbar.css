@@ -1,0 +1,71 @@
+#divPrincipal {
+    background-color: #3C4267;
+    width: 20vw;
+    height: 100vh;
+    border: 4px solid #29D3F2;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    font-size: 20px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    padding: 10px;
+    color: #F5F5F5;
+    text-decoration: none;
+}
+
+#logoDash {
+    
+    margin: 10px 0px;
+    color: whitesmoke;
+    display: flex;
+    justify-content: center;
+}
+
+img {
+   width: 65%;  
+}
+
+
+
+
+
+ul{
+    display: contents;
+    list-style-type: none;
+    color: whitesmoke;
+    text-decoration: none;
+}
+
+#linav{
+    
+    margin: 10px 15px;
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    align-self: center;
+    align-items: center;
+    gap: 20px;
+    padding: 12px 6px;
+    color: whitesmoke;
+    text-decoration: none;
+    
+}
+
+#linav:hover{
+    background-color: #319DBF;
+    cursor: pointer;
+    border-radius: 10px;
+    
+}
+
+a {
+    color: whitesmoke;
+    text-decoration: none;
+  }
+
+  @media (max-width: 768px) {
+    #divPrincipal {
+      width: 70vw;
+    }
+  }
+
