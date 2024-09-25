@@ -15,7 +15,7 @@ const registro = () => {
   const addUser = async (e) =>{
     e.preventDefault()
 
-    const res = await fetch("http://localhost:5000/api/users/register", {
+    const res = await fetch("http://localhost:5000/api/set-value", {
       method: "POST",
       headers: {
         "Content-type": "application/json",

@@ -10,13 +10,9 @@ const login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    
-    
-    
         try {
           // Enviar el email y contraseña al backend
-          const res = await fetch('http://localhost:5000/api/auth/login', {
+          const res = await fetch('http://localhost:5000/api/login', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -24,13 +20,11 @@ const login = () => {
             body: JSON.stringify({ email, password }),
           });
     
-          // Si la respuesta es 401 (Unauthorized), lanza un error
           if (res.status === 401) {
             const errorData = await res.json();
-            throw new Error(errorData.error || 'Credenciales incorrectas');
+            throw new Error(errorData.error || 'Contraseña y/o usuario no valido');
           }
-    
-          // Si la respuesta es exitosa
+  
           const data = await res.json();
     
           // Almacenar el token en localStorage
@@ -39,7 +33,7 @@ const login = () => {
           window.location.href = '/consulta'; 
     
         } catch (error) {
-          // Manejo del error si la respuesta es 401 o cualquier otro error
+          
           alert(error.message);
         }
         
